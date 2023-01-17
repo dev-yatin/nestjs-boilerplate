@@ -5,9 +5,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtMiddleware } from './util/middlewares/jwt.middleware';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
+import { ParkingModule } from './modules/parking/parking.module';
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, ParkingModule],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })

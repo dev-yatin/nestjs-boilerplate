@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export class BaseRepository {
-  constructor(private entity: any[]) {}
+export abstract class BaseRepository<T> {
+  constructor(protected readonly entity: T[]) {}
 
   /**
    *
@@ -23,7 +23,7 @@ export class BaseRepository {
    * @param entityFilterQuery Expected to be {[key:string]:string} format where key is query column
    * @returns First entry that matches key inside entity
    */
-  async findOne(entityFilterQuery: object): Promise<object> {
+  async findOne(entityFilterQuery: object): Promise<T> {
     const validateKey = Object.keys(entityFilterQuery)[0];
     const validateValue = Object.values(entityFilterQuery)[0];
 
@@ -55,7 +55,7 @@ export class BaseRepository {
       ...(entityData as object),
       ...commonEntityData,
     };
-    this.entity.push(responseEntity);
+    this.entity.push(responseEntity as T);
     return responseEntity;
   }
 }

@@ -7,4 +7,7 @@ export default () => ({
     secret: `${process.env.JWT_SECRET}` || 'y@t!n',
     expiresInMin: parseInt(process.env.JWT_EXPIRES_IN, 10) || 30,
   },
+  parking: {
+    totalSlots: parseInt(process.env.totalSlots, 10) || 5,
+  },
 });
