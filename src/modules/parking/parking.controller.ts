@@ -70,7 +70,7 @@ export class ParkingController {
   @ApiBadRequestResponse({ description: 'Provide valid slot number' })
   @ApiNotFoundResponse({ description: 'No car found on slot' })
   async findBySlot(@Param('slotNumber', ParseIntPipe) slotNumber: number) {
-    if (!slotNumber) {
+    if (isNaN(slotNumber)) {
       // NaN case
       throw new BadRequestException('Provide valid slot number');
     }
