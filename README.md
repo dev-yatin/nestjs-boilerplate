@@ -1,73 +1,41 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Car Parking APIs
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### App Details
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- **Port:** 3005
+- **Swagger Documentation Link:** http://localhost:3005/api
+- **Authentication Supported:** Yes
+- **Authorization Supported:** Yes
+- **Rate Limiting Supported:** Yes
+- **Parking APIs(Park/Unpark/Find by slot):** Yes
+- **Unit Testing for Parking APIs:** Yes
+- **Integration Testing for Parking APIs:** Yes
 
-## Description
+### Steps to start application
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Run `npm run start:dev` on command prompt and open _http://localhost:3005/api_ on browser.
 
-## Installation
+### Authentication
 
-```bash
-$ npm install
-```
+Cookie based authentication is implemented. In order to authenticate hit `/api/login` API with details
+`username:yatin@dummy.com` and `password` can be anything for now. If API hit successfully, you will be returned access token. This access token is JWT secret signed user information. You need not to copy this token anywhere. Your browser must have cookie available containing this information, now which will be automatically injected in all upcoming requests. You can hit `/api/logout` to clear this cookie and get unauthenticated.
 
-## Running the app
+### Authorization
 
-```bash
-# development
-$ npm run start
+Only 2 routes are public that are `/api/health` and `/api/login`. `/api/health` is just to know backend application health, can be used by load balancers.
+Remaining routes are protected and can be accessed only if user is logged in. If user try to access them with login, they will be thrown `401-Unauthorized` exception.
 
-# watch mode
-$ npm run start:dev
+### Rate Limiting
 
-# production mode
-$ npm run start:prod
-```
+For now rate limiting ttl is 60s that is 1min and 20 request limit. You can update and test it from `src/config/configuration.ts` file. If there will more than 20 request in 1min, then it will throw `429-Too many requests` exception.
 
-## Test
+### Parking APIs
 
-```bash
-# unit tests
-$ npm run test
+- `/api/park` : POST Request to add car in parking. Returns added car parking details. Return 400 if parking is full.
+- `/api/unpark/:licensePlateNumber` : DELETE Request to remove car from parking. Returns removed car parking details. Throw 404 if car not found.
+- `/api/slot/:slotNumber` : GET Request to get car parking detail on provided slot. Return 404 if car not found on provided slot.
 
-# e2e tests
-$ npm run test:e2e
+### Testing
 
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+To run unit test run: `npm run test:watch --p parking` and
+To run integration test run: `npm run test:e2e --p parking`
