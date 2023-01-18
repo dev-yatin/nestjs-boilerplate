@@ -23,7 +23,7 @@ Cookie based authentication is implemented. In order to authenticate hit `/api/l
 ### Authorization
 
 Only 2 routes are public that are `/api/health` and `/api/login`. `/api/health` is just to know backend application health, can be used by load balancers.
-Remaining routes are protected and can be accessed only if user is logged in. If user try to access them with login, they will be thrown `401-Unauthorized` exception.
+Remaining routes are protected and can be accessed only if user is logged in. If user try to access them without login, they will be thrown `401-Unauthorized` exception.
 
 ### Rate Limiting
 
