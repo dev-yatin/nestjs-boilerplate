@@ -12,6 +12,11 @@ describe('ParkingController', () => {
   let parkingService: ParkingService;
 
   const licensePlateNumbers = ['1230', '1231', '1232', '1233', '1234'];
+  const request = {
+    user: {
+      email: 'test@dummy.com',
+    },
+  };
   let firstRecordId;
 
   beforeAll(async () => {
@@ -38,9 +43,12 @@ describe('ParkingController', () => {
   });
 
   it('Add car in parking', async () => {
-    const newParking: ResponseParkingDto = await controller.createParking({
-      licensePlateNumber: licensePlateNumbers[0],
-    });
+    const newParking: ResponseParkingDto = await controller.createParking(
+      {
+        licensePlateNumber: licensePlateNumbers[0],
+      },
+      request,
+    );
     expect(newParking._id).toBeDefined();
     firstRecordId = newParking._id;
     expect(newParking.licensePlateNumber).toEqual(licensePlateNumbers[0]);

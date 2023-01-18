@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   BadRequestException,
   NotFoundException,
+  Request,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -33,7 +34,10 @@ export class ParkingController {
   @Post('park')
   @ApiOkResponse()
   @ApiBadRequestResponse({ description: 'Parking lot is full.' })
-  async createParking(@Body(TrimPipe) createParkingDto: CreateParkingDto) {
+  async createParking(
+    @Body(TrimPipe) createParkingDto: CreateParkingDto,
+    @Request() request,
+  ) {
     const nextAvailableSlot = this.parkingService.findNextAvailableSlot(
       configuration().parking.totalSlots,
     );
@@ -42,6 +46,7 @@ export class ParkingController {
     }
     const createdParking = await this.parkingService.create({
       ...createParkingDto,
+      createdBy: request.user.email,
       slotNumber: nextAvailableSlot,
     });
     return createdParking;
