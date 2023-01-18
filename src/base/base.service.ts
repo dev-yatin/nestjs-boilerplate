@@ -20,4 +20,13 @@ export abstract class BaseService<T> {
   async create(entityData: any): Promise<any> {
     return await this.baseRepository.create(entityData);
   }
+
+  /**
+   * To remove record from data
+   * @param id Unique Identifier of record
+   * @returns Removed record
+   */
+  async remove(id: string): Promise<T> {
+    return await this.baseRepository.remove(id);
+  }
 }

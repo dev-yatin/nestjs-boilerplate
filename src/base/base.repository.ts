@@ -58,4 +58,20 @@ export abstract class BaseRepository<T> {
     this.entity.push(responseEntity as T);
     return responseEntity;
   }
+
+  /**
+   * To remove record from data
+   * @param id Unique Identifier of record
+   * @returns Removed record
+   */
+  async remove(id: string): Promise<T> {
+    const toBeRemovedEntityIndex = this.entity.findIndex(
+      (row) => (row as any)._id === id,
+    );
+    if (toBeRemovedEntityIndex === -1) {
+      return null;
+    }
+    const removedEntry = this.entity.splice(toBeRemovedEntityIndex, 1);
+    return removedEntry[0];
+  }
 }

@@ -4,7 +4,9 @@ import { users, IUser } from './mock.users';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService) {
+    global.jwtService = jwtService;
+  }
   /**
    * To get authenticated user
    * @param username Email which user use to login
