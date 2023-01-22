@@ -1,4 +1,6 @@
-# Car Parking APIs
+# NestJS Boilerplate APIs
+
+I have assumed a basic car parking application and created CURD APIs based on that.
 
 ### App Details
 
